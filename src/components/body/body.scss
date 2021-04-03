@@ -4,6 +4,11 @@
   align-items: center;
   margin-top: 30px;
 
+  &--dead {
+    animation: swing ease-in-out 1s infinite alternate;
+    transform-origin: center -20px;
+  }
+
   &__head {
     display: flex;
     height: 30px;
@@ -14,6 +19,21 @@
     &--missed {
       border-color: black;
     }
+
+    &--dead {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      line-height: 10px;
+      &::before {
+        content: "X X";
+      }
+      &::after {
+        content: "_";
+      }
+    }
   }
 
   &__torso {
@@ -21,7 +41,7 @@
     width: 2px;
     height: 60px;
     background-color: lightgray;
-    
+
     &--missed {
       background-color: black;
     }
@@ -66,5 +86,14 @@
     &--right {
       transform: rotate(-40deg);
     }
+  }
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(-3deg);
   }
 }
