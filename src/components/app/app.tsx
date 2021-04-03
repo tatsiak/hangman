@@ -21,6 +21,7 @@ const words = [
 ];
 
 export const App = () => {
+  const [games, setGames] = useState(1);
   const [missesCount, setMissesCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [pressedKeys, setPressedKeys] = useState<Array<string>>([]);
@@ -28,7 +29,7 @@ export const App = () => {
 
   useEffect(() => {
     setWord(words[Math.floor(Math.random() * words.length)].toUpperCase());
-  }, []);
+  }, [games]);
 
   const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
 
@@ -64,6 +65,7 @@ export const App = () => {
               setMissesCount(0);
               setCorrectCount(0);
               setPressedKeys([]);
+              setGames((games) => games + 1);
             }}
           >
             Try again
