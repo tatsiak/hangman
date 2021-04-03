@@ -2,9 +2,20 @@ import classNames from "classnames";
 import React from "react";
 import "./body.scss";
 
-export const Body = ({ missesCount = 0 }: { missesCount: number }) => {
+export const Body = ({
+  missesCount = 0,
+  won,
+}: {
+  missesCount: number;
+  won: boolean;
+}) => {
   return (
-    <div className={classNames("body", { "body--dead": missesCount > 5 })}>
+    <div
+      className={classNames("body", {
+        "body--dead": missesCount > 5,
+        "body--won": won,
+      })}
+    >
       <div
         className={classNames("body__head", {
           "body__head--missed": missesCount > 0,

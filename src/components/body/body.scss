@@ -3,10 +3,17 @@
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  color: lightgray;
 
   &--dead {
     animation: swing ease-in-out 1s infinite alternate;
     transform-origin: center -20px;
+  }
+
+  &--won {
+    animation: won ease-in 1s;
+    transform: translateY(40px);
+    color: black;
   }
 
   &__head {
@@ -14,7 +21,7 @@
     height: 30px;
     width: 30px;
     border-radius: 30px;
-    border: 2px solid lightgray;
+    border: 2px solid currentColor;
 
     &--missed {
       border-color: black;
@@ -27,6 +34,8 @@
       justify-content: center;
       font-size: 10px;
       line-height: 10px;
+      color: black;
+      
       &::before {
         content: "X X";
       }
@@ -40,7 +49,7 @@
     position: relative;
     width: 2px;
     height: 60px;
-    background-color: lightgray;
+    background-color: currentColor;
 
     &--missed {
       background-color: black;
@@ -51,7 +60,7 @@
     position: absolute;
     width: 2px;
     height: 40px;
-    background-color: lightgray;
+    background-color: currentColor;
     transform-origin: top center;
 
     &--missed {
@@ -72,7 +81,7 @@
     bottom: -40px;
     width: 2px;
     height: 40px;
-    background-color: lightgray;
+    background-color: currentColor;
     transform-origin: top center;
 
     &--missed {
@@ -95,5 +104,14 @@
   }
   100% {
     transform: rotate(-3deg);
+  }
+}
+
+@keyframes won {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(40px);
   }
 }

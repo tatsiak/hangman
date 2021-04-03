@@ -2,6 +2,10 @@
 
 https://en.wikipedia.org/wiki/Hangman_(game)
 
+## Preview
+
+http://tatsiak.github.io/hangman
+
 ## Available Scripts
 
 In the project directory, you can run:
