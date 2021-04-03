@@ -12,8 +12,9 @@ export const Word = ({
   const characters = word.split("");
   return (
     <div className="word">
-      {characters.map((char) => (
+      {characters.map((char, i) => (
         <div
+          key={char + i}
           className={classNames("word__char", {
             "word__char--correct": pressedKeys.includes(char.toUpperCase()),
           })}

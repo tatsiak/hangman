@@ -1,27 +1,47 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Body } from "../body/body";
 import { Gallows } from "../gallows/gallows";
 import { Keyboard } from "../keyboard/keyboard";
 import { Word } from "../word/word";
 import "./app.scss";
 
+const words = [
+  "wooden",
+  "calculator",
+  "blow",
+  "cake",
+  "hungry",
+  "detail",
+  "icy",
+  "big",
+  "uneven",
+  "stocking",
+  "volatile",
+  "crow",
+];
+
 export const App = () => {
   const [missesCount, setMissesCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [pressedKeys, setPressedKeys] = useState<Array<string>>([]);
-  const word = "Tatsiak".toUpperCase();
-  const uniqCharactersCount = new Set(word.split("")).size;
+  const [word, setWord] = useState<string>();
+
+  useEffect(() => {
+    setWord(words[Math.floor(Math.random() * words.length)].toUpperCase());
+  }, []);
+
+  const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
 
   const onKeyPress = useCallback(
     (key: string) => {
       setPressedKeys([...pressedKeys, key]);
-      if (!word.includes(key)) {
+      if (word && !word.includes(key)) {
         setMissesCount((prevMissedCount) => prevMissedCount + 1);
       } else {
         setCorrectCount((prevCorrectCount) => prevCorrectCount + 1);
       }
     },
-    [pressedKeys]
+    [pressedKeys, word]
   );
 
   return (
@@ -33,7 +53,7 @@ export const App = () => {
           won={correctCount === uniqCharactersCount}
         />
       </Gallows>
-      <Word pressedKeys={pressedKeys} word={word} />
+      <Word pressedKeys={pressedKeys} word={word || ""} />
       {missesCount > 5 || correctCount === uniqCharactersCount ? (
         <>
           <h2>
