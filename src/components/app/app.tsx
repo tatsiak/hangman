@@ -12,14 +12,17 @@ export const App = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [pressedKeys, setPressedKeys] = useState<Array<string>>([]);
   const [word, setWord] = useState<string>();
+  const [hintsCount, setHintsCount] = useState(3);
+  const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
+  const shouldShowHint = missesCount > 3 && hintsCount >= 1;
+  const isGameOver =
+    missesCount > maxMisses || correctCount === uniqCharactersCount;
 
   useEffect(() => {
     fetch("https://random-word-api.herokuapp.com/word?number=1")
       .then((response) => response.json())
       .then((data) => setWord(data[0].toUpperCase()));
   }, [games]);
-
-  const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
 
   const onKeyPress = useCallback(
     (key: string) => {
@@ -33,6 +36,16 @@ export const App = () => {
     [pressedKeys, word]
   );
 
+  const onUseHint = useCallback(() => {
+    setHintsCount((hints) => hints - 1);
+    if (word) {
+      const unusedChar =
+        word.split("").find((char) => !pressedKeys.includes(char)) || "";
+      setPressedKeys([...pressedKeys, unusedChar]);
+      setCorrectCount((prevCorrectCount) => prevCorrectCount + 1);
+    }
+  }, [pressedKeys, word]);
+
   return (
     <div className="app">
       {word ? (
@@ -44,12 +57,13 @@ export const App = () => {
               won={correctCount === uniqCharactersCount}
             />
           </Gallows>
-          <Word pressedKeys={pressedKeys} word={word || ""} />
-          {missesCount > maxMisses || correctCount === uniqCharactersCount ? (
+          <Word pressedKeys={pressedKeys} word={word} showWord={isGameOver} />
+          {isGameOver ? (
             <>
               <h2>
-                You{" "}
-                {correctCount === uniqCharactersCount ? "won 🎉" : "lost 😞"}
+                {correctCount === uniqCharactersCount
+                  ? "You won 🎉"
+                  : "You lost 😞"}
               </h2>
               <button
                 onClick={() => {
@@ -64,7 +78,14 @@ export const App = () => {
               </button>
             </>
           ) : (
-            <Keyboard pressedKeys={pressedKeys} onKeyPress={onKeyPress} />
+            <>
+              <Keyboard pressedKeys={pressedKeys} onKeyPress={onKeyPress} />
+              {shouldShowHint && (
+                <button onClick={onUseHint}>
+                  you have {hintsCount} hint{hintsCount === 1 ? "" : "s"} 💡
+                </button>
+              )}
+            </>
           )}
         </>
       ) : (

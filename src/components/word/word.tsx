@@ -5,9 +5,11 @@ import "./word.scss";
 export const Word = ({
   pressedKeys,
   word,
+  showWord,
 }: {
   pressedKeys: Array<string>;
   word: string;
+  showWord: boolean;
 }) => {
   const characters = word.split("");
   return (
@@ -16,10 +18,11 @@ export const Word = ({
         <div
           key={char + i}
           className={classNames("word__char", {
-            "word__char--correct": pressedKeys.includes(char.toUpperCase()),
+            "word__char--correct":
+              pressedKeys.includes(char.toUpperCase()) || showWord,
           })}
         >
-          {char}
+          {pressedKeys.includes(char.toUpperCase()) || showWord ? char : ""}
         </div>
       ))}
     </div>
