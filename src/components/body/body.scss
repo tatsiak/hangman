@@ -1,0 +1,70 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+
+  &__head {
+    display: flex;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    border: 2px solid lightgray;
+
+    &--missed {
+      border-color: black;
+    }
+  }
+
+  &__torso {
+    position: relative;
+    width: 2px;
+    height: 60px;
+    background-color: lightgray;
+    
+    &--missed {
+      background-color: black;
+    }
+  }
+
+  &__hand {
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    background-color: lightgray;
+    transform-origin: top center;
+
+    &--missed {
+      background-color: black;
+    }
+
+    &--left {
+      transform: rotate(40deg);
+    }
+
+    &--right {
+      transform: rotate(-40deg);
+    }
+  }
+
+  &__leg {
+    position: absolute;
+    bottom: -40px;
+    width: 2px;
+    height: 40px;
+    background-color: lightgray;
+    transform-origin: top center;
+
+    &--missed {
+      background-color: black;
+    }
+
+    &--left {
+      transform: rotate(40deg);
+    }
+
+    &--right {
+      transform: rotate(-40deg);
+    }
+  }
+}
