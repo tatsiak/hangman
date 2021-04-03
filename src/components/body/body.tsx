@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import { maxMisses } from "../app/app";
 import "./body.scss";
 
 export const Body = ({
@@ -12,14 +13,14 @@ export const Body = ({
   return (
     <div
       className={classNames("body", {
-        "body--dead": missesCount > 5,
+        "body--dead": missesCount > maxMisses,
         "body--won": won,
       })}
     >
       <div
         className={classNames("body__head", {
           "body__head--missed": missesCount > 0,
-          "body__head--dead": missesCount > 5,
+          "body__head--dead": missesCount > maxMisses,
         })}
       />
       <div

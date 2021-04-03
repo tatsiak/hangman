@@ -5,6 +5,7 @@ import { Keyboard } from "../keyboard/keyboard";
 import { Word } from "../word/word";
 import "./app.scss";
 
+export const maxMisses = 5;
 export const App = () => {
   const [games, setGames] = useState(1);
   const [missesCount, setMissesCount] = useState(0);
@@ -44,7 +45,7 @@ export const App = () => {
             />
           </Gallows>
           <Word pressedKeys={pressedKeys} word={word || ""} />
-          {missesCount > 5 || correctCount === uniqCharactersCount ? (
+          {missesCount > maxMisses || correctCount === uniqCharactersCount ? (
             <>
               <h2>
                 You{" "}
