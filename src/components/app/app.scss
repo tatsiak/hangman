@@ -5,4 +5,14 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
+
+  &__loading {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -5,21 +5,6 @@ import { Keyboard } from "../keyboard/keyboard";
 import { Word } from "../word/word";
 import "./app.scss";
 
-const words = [
-  "wooden",
-  "calculator",
-  "blow",
-  "cake",
-  "hungry",
-  "detail",
-  "icy",
-  "big",
-  "uneven",
-  "stocking",
-  "volatile",
-  "crow",
-];
-
 export const App = () => {
   const [games, setGames] = useState(1);
   const [missesCount, setMissesCount] = useState(0);
@@ -28,7 +13,9 @@ export const App = () => {
   const [word, setWord] = useState<string>();
 
   useEffect(() => {
-    setWord(words[Math.floor(Math.random() * words.length)].toUpperCase());
+    fetch("https://random-word-api.herokuapp.com/word?number=1")
+      .then((response) => response.json())
+      .then((data) => setWord(data[0].toUpperCase()));
   }, [games]);
 
   const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
@@ -47,32 +34,40 @@ export const App = () => {
 
   return (
     <div className="app">
-      <h1>Hangman Game</h1>
-      <Gallows>
-        <Body
-          missesCount={missesCount}
-          won={correctCount === uniqCharactersCount}
-        />
-      </Gallows>
-      <Word pressedKeys={pressedKeys} word={word || ""} />
-      {missesCount > 5 || correctCount === uniqCharactersCount ? (
+      {word ? (
         <>
-          <h2>
-            You {correctCount === uniqCharactersCount ? "won 🎉" : "loose 😞"}
-          </h2>
-          <button
-            onClick={() => {
-              setMissesCount(0);
-              setCorrectCount(0);
-              setPressedKeys([]);
-              setGames((games) => games + 1);
-            }}
-          >
-            Try again
-          </button>
+          <h1>Hangman Game</h1>
+          <Gallows>
+            <Body
+              missesCount={missesCount}
+              won={correctCount === uniqCharactersCount}
+            />
+          </Gallows>
+          <Word pressedKeys={pressedKeys} word={word || ""} />
+          {missesCount > 5 || correctCount === uniqCharactersCount ? (
+            <>
+              <h2>
+                You{" "}
+                {correctCount === uniqCharactersCount ? "won 🎉" : "lost 😞"}
+              </h2>
+              <button
+                onClick={() => {
+                  setMissesCount(0);
+                  setCorrectCount(0);
+                  setPressedKeys([]);
+                  setWord(undefined);
+                  setGames((games) => games + 1);
+                }}
+              >
+                Try again
+              </button>
+            </>
+          ) : (
+            <Keyboard pressedKeys={pressedKeys} onKeyPress={onKeyPress} />
+          )}
         </>
       ) : (
-        <Keyboard pressedKeys={pressedKeys} onKeyPress={onKeyPress} />
+        <span className="app__loading">⚙️</span>
       )}
     </div>
   );
