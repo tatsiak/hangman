@@ -6,13 +6,14 @@ import { Word } from "../word/word";
 import "./app.scss";
 
 export const maxMisses = 5;
+const initialHints = 3;
 export const App = () => {
   const [games, setGames] = useState(1);
   const [missesCount, setMissesCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [pressedKeys, setPressedKeys] = useState<Array<string>>([]);
   const [word, setWord] = useState<string>();
-  const [hintsCount, setHintsCount] = useState(3);
+  const [hintsCount, setHintsCount] = useState(initialHints);
   const uniqCharactersCount = word ? new Set(word.split("")).size : 0;
   const shouldShowHint = missesCount > 3 && hintsCount >= 1;
   const isGameOver =
@@ -39,12 +40,24 @@ export const App = () => {
   const onUseHint = useCallback(() => {
     setHintsCount((hints) => hints - 1);
     if (word) {
-      const unusedChar =
-        word.split("").find((char) => !pressedKeys.includes(char)) || "";
+      const chars = word
+        .split("")
+        .filter((char) => !pressedKeys.includes(char));
+      let unusedChar = chars[Math.floor(Math.random() * chars.length)];
+
       setPressedKeys([...pressedKeys, unusedChar]);
       setCorrectCount((prevCorrectCount) => prevCorrectCount + 1);
     }
   }, [pressedKeys, word]);
+
+  const onRestartGame = () => {
+    setMissesCount(0);
+    setCorrectCount(0);
+    setPressedKeys([]);
+    setWord(undefined);
+    setHintsCount(initialHints);
+    setGames((games) => games + 1);
+  };
 
   return (
     <div className="app">
@@ -65,17 +78,7 @@ export const App = () => {
                   ? "You won 🎉"
                   : "You lost 😞"}
               </h2>
-              <button
-                onClick={() => {
-                  setMissesCount(0);
-                  setCorrectCount(0);
-                  setPressedKeys([]);
-                  setWord(undefined);
-                  setGames((games) => games + 1);
-                }}
-              >
-                Try again
-              </button>
+              <button onClick={onRestartGame}>Try again</button>
             </>
           ) : (
             <>
